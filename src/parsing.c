@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 19:54:22 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2025/12/29 20:14:26 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2025/12/30 17:38:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,58 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (sign * result);
+}
+
+int	is_valid_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	validate_args(int argc, char **argv)
+{
+	int	i;
+
+	i = 1;
+	if (!(argc == 5 || argc == 6))
+		return (0);
+	while (i < argc)
+	{
+		if (!is_valid_number(argv[i]))
+			return (0);
+		i++;
+	}
+	if (ft_atoi(argv[1]) < 1)
+		return (0);
+	if (ft_atoi(argv[2]) <= 0)
+		return (0);
+	if (ft_atoi(argv[3]) <= 0)
+		return (0);
+	if (ft_atoi(argv[4]) <= 0)
+		return (0);
+	if (argc == 6 && ft_atoi(argv[5]) < 1)
+		return (0);
+	return (1);
+}
+
+void	parse_args(int argc, char **argv, t_data *data)
+{
+	data->num_philos = ft_atoi(argv[1]);
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		data->must_eat_count = ft_atoi(argv[5]);
+	else
+		data->must_eat_count = -1;
 }
