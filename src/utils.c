@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
+/*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:29:28 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2025/12/29 19:52:52 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/05 13:31:32 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,3 +63,4 @@ int	is_dead(t_data *data)
 	pthread_mutex_unlock(&data->death_mutex);
 	return (dead);
 }
+

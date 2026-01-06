@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophres.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2025/12/30 17:44:50 by marvin           ###   ########.fr       */
+/*   Updated: 2026/01/05 18:05:31 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,25 @@ int			validate_args(int argc, char **argv);
 void		parse_args(int argc, char **argv, t_data *data);
 
 /*---INIT---*/
-void		init_data(t_data *data);
+int			init_data(t_data *data);
+int			init_forks(t_data *data);
+int			init_philos(t_data *data);
+
+/*---ROUTINE---*/
+void		take_forks(t_philo *philo);
+void		eat(t_philo *philo);
+void		*philosopher_routine(void *arg);
+
+/*---MONITOR---*/
+int			check_philosopher_death(t_data *data, int i);
+void		handle_death(t_data *data, int i);
+void		*monitor_death(void *arg);
+
+/*---MAIN---*/
+int			start_simulation(t_data *data);
+void		cleanup(t_data *data);
+void		wait_threads(t_data *data);
+void		*monitor_death(void *arg);
+
 
 #endif
