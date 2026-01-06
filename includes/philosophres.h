@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/05 18:05:31 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 00:13:37 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
+	pthread_mutex_t	meal_mutex;
 	t_data			*data;
 }	t_philo;
 
@@ -80,7 +81,6 @@ void		*monitor_death(void *arg);
 int			start_simulation(t_data *data);
 void		cleanup(t_data *data);
 void		wait_threads(t_data *data);
-void		*monitor_death(void *arg);
 
 
 #endif

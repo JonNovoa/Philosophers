@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:35 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/05 18:12:43 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 00:43:36 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 int	start_simulation(t_data *data)
 {
 	pthread_t	monitor;
-	int	i;
+	int			i;
 
+	i = 0;
+	while (i < data->num_philos)
+	{
+		data->philos[i].last_meal_time = data->start_time;
+		i++;
+	}
 	i = 0;
 	while (i < data->num_philos)
 	{
@@ -24,6 +30,8 @@ int	start_simulation(t_data *data)
 			philosopher_routine, &data->philos[i]);
 		i++;
 	}
+	pthread_create(&monitor, NULL, monitor_death, data);
+	pthread_detach(monitor);
 	return (1);
 }
 
@@ -47,6 +55,7 @@ void	cleanup(t_data *data)
 	while (i < data->num_philos)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].meal_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_mutex);
@@ -55,32 +64,23 @@ void	cleanup(t_data *data)
 	free(data->philos);
 }
 
-void	*monitor_death(void *arg)
+int	main(int argc, char **argv)
 {
-	t_data		*data;
-	int			i;
-	long long	time_since_meal;
+	t_data	data;
 
-	data = (t_data *)arg;
-	while (1)
+	if (! validate_args(argc, argv))
 	{
-		i = 0;
-		while (i < data->num_philos)
-		{
-			time_since_meal = get_timestamp() - data->philos[i].last_meal_time;
-			if (time_since_meal > data->time_to_die)
-			{
-				pthread_mutex_lock(&data->death_mutex);
-				data->death_flag = 1;
-				pthread_mutex_unlock(&data->death_mutex);
-				pthread_mutex_lock(&data->print_mutex);
-				printf("death");
-				pthread_mutex_unlock(&data->print_mutex);
-				return (NULL);
-			}
-			i++;
-		}
-		ft_usleep(1000);
+		printf("Error: Invalid arguments\n");
+		return (1);
 	}
-	return (NULL);
+	parse_args(argc, argv, &data);
+	if (!init_data(&data))
+	{
+		printf("Error:  Initialization failed\n");
+		return (1);
+	}
+	start_simulation(&data);
+	wait_threads(&data);
+	cleanup(&data);
+	return (0);
 }
