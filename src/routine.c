@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:17:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 16:16:40 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 17:40:49 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	*philosopher_routine(void *arg)
 	if (philo->data->num_philos == 1)
 	{
 		print_status(philo, "has taken a fork");
-		ft_usleep(philo->data->time_to_die);
+		while (!is_dead(philo->data))
+			usleep(1000);
 		return (NULL);
 	}
 	while (!is_dead(philo->data))
