@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:17:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/04 17:47:58 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 16:16:40 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = get_timestamp();
+	pthread_mutex_unlock(&philo->meal_mutex);
 	print_status(philo, "is eating");
 	ft_usleep(philo->data->time_to_eat);
-	philo->meals_count += 1;
+	philo->meals_count++;
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophres.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 00:13:37 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 16:53:39 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,13 @@ void		*philosopher_routine(void *arg);
 /*---MONITOR---*/
 int			check_philosopher_death(t_data *data, int i);
 void		handle_death(t_data *data, int i);
+int			check_all_ate_enough(t_data *data);
+int			check_simulation_end(t_data *data, int i);
 void		*monitor_death(void *arg);
 
 /*---MAIN---*/
 int			start_simulation(t_data *data);
 void		cleanup(t_data *data);
 void		wait_threads(t_data *data);
-
 
 #endif

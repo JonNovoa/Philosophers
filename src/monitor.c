@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jnovoa-a <jnovoa-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 17:43:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 00:44:26 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/07 16:53:11 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,38 @@ void	handle_death(t_data *data, int i)
 	pthread_mutex_unlock(&data->print_mutex);
 }
 
+int	check_all_ate_enough(t_data *data)
+{
+	int	i;
+	int	all_ate;
+
+	if (data->must_eat_count == -1)
+		return (0);
+	i = 0;
+	all_ate = 1;
+	while (i < data->num_philos)
+	{
+		pthread_mutex_lock(&data->philos[i]. meal_mutex);
+		if (data->philos[i].meals_count < data->must_eat_count)
+			all_ate = 0;
+		pthread_mutex_unlock(&data->philos[i].meal_mutex);
+		if (!all_ate)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	check_simulation_end(t_data *data, int i)
+{
+	if (check_philosopher_death(data, i))
+	{
+		handle_death(data, i);
+		return (1);
+	}
+	return (0);
+}
+
 void	*monitor_death(void *arg)
 {
 	t_data	*data;
@@ -48,12 +80,16 @@ void	*monitor_death(void *arg)
 		i = 0;
 		while (i < data->num_philos)
 		{
-			if (check_philosopher_death(data, i))
-			{
-				handle_death(data, i);
+			if (check_simulation_end(data, i))
 				return (NULL);
-			}
 			i++;
+		}
+		if (check_all_ate_enough(data))
+		{
+			pthread_mutex_lock(&data->death_mutex);
+			data->death_flag = 1;
+			pthread_mutex_unlock(&data->death_mutex);
+			return (NULL);
 		}
 		usleep(1000);
 	}
