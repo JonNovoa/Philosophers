@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:17:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 17:40:49 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/12 14:34:44 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = get_timestamp();
+	philo->meals_count++;
 	pthread_mutex_unlock(&philo->meal_mutex);
 	print_status(philo, "is eating");
 	ft_usleep(philo->data->time_to_eat);
-	philo->meals_count++;
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
