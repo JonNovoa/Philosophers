@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:29:28 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 16:16:54 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:14:39 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,14 @@ long long	get_time_diff(long long start_time)
 void	print_status(t_philo *philo, char *status)
 {
 	long long	dif;
+	int			dead;
 
 	dif = get_time_diff(philo->data->start_time);
 	pthread_mutex_lock(&philo->data->print_mutex);
-	if (philo->data->death_flag == 0)
+	pthread_mutex_lock(&philo->data->death_mutex);
+	dead = philo->data->death_flag;
+	pthread_mutex_unlock(&philo->data->death_mutex);
+	if (dead == 0)
 		printf("%lld %d %s\n", dif, philo->id, status);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
@@ -51,7 +55,7 @@ void	ft_usleep(long long milliseconds)
 	start = get_timestamp();
 	target = start + milliseconds;
 	while (get_timestamp() < target)
-		usleep(500);
+		usleep(100);
 }
 
 int	is_dead(t_data *data)

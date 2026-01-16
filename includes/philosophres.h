@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/09 14:18:44 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:44:31 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int			check_simulation_end(t_data *data, int i);
 void		*monitor_death(void *arg);
 
 /*---MAIN---*/
-int			start_simulation(t_data *data);
+int			start_simulation(t_data *data, pthread_t *monitor);
 void		cleanup(t_data *data);
 void		wait_threads(t_data *data);
 

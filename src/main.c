@@ -6,15 +6,14 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:59:35 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 16:08:56 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:10:27 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophres.h"
 
-int	start_simulation(t_data *data)
+int	start_simulation(t_data *data, pthread_t *monitor)
 {
-	pthread_t	monitor;
 	int			i;
 
 	i = 0;
@@ -30,8 +29,7 @@ int	start_simulation(t_data *data)
 			philosopher_routine, &data->philos[i]);
 		i++;
 	}
-	pthread_create(&monitor, NULL, monitor_death, data);
-	pthread_detach(monitor);
+	pthread_create(monitor, NULL, monitor_death, data);
 	return (1);
 }
 
@@ -66,21 +64,21 @@ void	cleanup(t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+	t_data		*data;
+	pthread_t	monitor;
 
-	if (! validate_args(argc, argv))
-	{
-		printf("Error: Invalid arguments\n");
-		return (1);
-	}
-	parse_args(argc, argv, &data);
-	if (!init_data(&data))
-	{
-		printf("Error:  Initialization failed\n");
-		return (1);
-	}
-	start_simulation(&data);
-	wait_threads(&data);
-	cleanup(&data);
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (write(2, "Error: malloc\n", 14), 1);
+	if (!validate_args(argc, argv))
+		return (write(2, "Error: args\n", 12), free(data), 1);
+	parse_args(argc, argv, data);
+	if (!init_data(data))
+		return (write(2, "Error: init\n", 12), free(data), 1);
+	start_simulation(data, &monitor);
+	wait_threads(data);
+	pthread_join(monitor, NULL);
+	cleanup(data);
+	free(data);
 	return (0);
 }

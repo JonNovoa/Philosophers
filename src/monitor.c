@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 17:43:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/07 16:53:11 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:17:45 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	*monitor_death(void *arg)
 			pthread_mutex_unlock(&data->death_mutex);
 			return (NULL);
 		}
-		usleep(1000);
+		ft_usleep(100);
 	}
 	return (NULL);
 }
