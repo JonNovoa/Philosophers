@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 17:43:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/16 18:17:45 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:51:35 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_all_ate_enough(t_data *data)
 	all_ate = 1;
 	while (i < data->num_philos)
 	{
-		pthread_mutex_lock(&data->philos[i]. meal_mutex);
+		pthread_mutex_lock(&data->philos[i].meal_mutex);
 		if (data->philos[i].meals_count < data->must_eat_count)
 			all_ate = 0;
 		pthread_mutex_unlock(&data->philos[i].meal_mutex);

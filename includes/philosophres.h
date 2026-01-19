@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/16 16:44:31 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:24:01 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_data
 }	t_data;
 
 /*---UTILS---*/
-
 long long	get_timestamp(void);
 long long	get_time_diff(long long start_time);
 void		print_status(t_philo *philo, char *status);
@@ -70,6 +69,7 @@ int			init_philos(t_data *data);
 /*---ROUTINE---*/
 void		take_forks(t_philo *philo);
 void		eat(t_philo *philo);
+int			has_enough_meals(t_philo *philo);
 void		*philosopher_routine(void *arg);
 
 /*---MONITOR---*/
