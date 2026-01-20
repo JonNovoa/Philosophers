@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:40:59 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/19 20:24:01 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:30:21 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			init_forks(t_data *data);
 int			init_philos(t_data *data);
 
 /*---ROUTINE---*/
-void		take_forks(t_philo *philo);
+int			take_forks(t_philo *philo);
 void		eat(t_philo *philo);
 int			has_enough_meals(t_philo *philo);
 void		*philosopher_routine(void *arg);

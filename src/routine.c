@@ -6,7 +6,7 @@
 /*   By: jnovoa-a <jnovoa-a@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 19:17:07 by jnovoa-a          #+#    #+#             */
-/*   Updated: 2026/01/19 20:51:43 by jnovoa-a         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:39:54 by jnovoa-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	has_enough_meals(t_philo *philo)
 	return (done);
 }
 
-void	take_forks(t_philo *philo)
+int	take_forks(t_philo *philo)
 {
 	if (has_enough_meals(philo))
-		return ;
+		return (0);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->right_fork);
@@ -42,6 +42,7 @@ void	take_forks(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, "has taken a fork");
 	}
+	return (1);
 }
 
 void	eat(t_philo *philo)
@@ -56,26 +57,30 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
+static void	handle_single_philo(t_philo *philo)
+{
+	print_status(philo, "has taken a fork");
+	while (!is_dead(philo->data))
+		ft_usleep(1000);
+}
+
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)arg;
+	philo = arg;
 	if (philo->data->num_philos == 1)
-	{
-		print_status(philo, "has taken a fork");
-		while (!is_dead(philo->data))
-			ft_usleep(1000);
-		return (NULL);
-	}
+		return (handle_single_philo(philo), NULL);
 	if (philo->id % 2 == 0)
-		usleep(philo->data->time_to_eat * 1000 / 2);
+		usleep(philo->data->time_to_eat * 500);
 	while (!is_dead(philo->data) && !has_enough_meals(philo))
 	{
 		print_status(philo, "is thinking");
-		take_forks(philo);
-		if (has_enough_meals(philo) || is_dead(philo->data))
+		if (!take_forks(philo))
 			break ;
+		if (has_enough_meals(philo) || is_dead(philo->data))
+			return (pthread_mutex_unlock(philo->left_fork),
+				pthread_mutex_unlock(philo->right_fork), NULL);
 		eat(philo);
 		if (has_enough_meals(philo) || is_dead(philo->data))
 			break ;
